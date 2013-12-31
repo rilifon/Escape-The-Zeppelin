@@ -59,18 +59,22 @@ function newClass(...)
 	local class, bases = {}, {...}
 
 	for _, b in ipairs(bases) do
-		for k, v in pairs(b) do
-			class[k] = v
+		if not b.__isdecl then
+			for k, v in pairs(b) do
+				class[k] = v
+			end
 		end
 	end
 
 	class.__index, class.instanceof = class, {[class] = true}
 
 	for _, b in ipairs(bases) do
-		for deps in pairs(b.instanceof) do
-			class.instanceof[deps] = true
+		if not b.__isdecl then
+			for deps in pairs(b.instanceof) do
+				class.instanceof[deps] = true
+			end
+			class.instanceof[b] = true
 		end
-		class.instanceof[b] = true
 	end
 
 	setmetatable(class, {__call = function(_class, ...)

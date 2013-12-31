@@ -1,3 +1,5 @@
+require "base.object"
+
 -- Vector class.
 
 -- Very numbers!
@@ -17,8 +19,10 @@
 -- In reality x and y do not exist. We merely
 -- redirect calls for x and y to self[1] and self[2].
 Vector = base.object.newClass {
+	__isdecl = true,
 	x = nil,
-	y = nil
+	y = nil,
+	__typeid = nil
 }
 
 function Vector:__index(key)
@@ -29,6 +33,7 @@ end
 
 function Vector:__init(x, y)
 	self[1], self[2] = x or 0, y or 0
+	self.__typeid = "vector"
 end
 
 function Vector:normalize()
