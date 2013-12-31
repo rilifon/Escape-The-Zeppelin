@@ -48,7 +48,7 @@ function secondRoom.update(dt)
  		end
 
  	elseif evento == "stoneface" then
- 		animation = {89, 64, "mouth"}
+ 		animation = {89, 64, "mouth",2}
  		timer = 0
  		aniFrame = 1
  		love.mouse.setVisible(false)

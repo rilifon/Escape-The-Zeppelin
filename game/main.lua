@@ -17,7 +17,7 @@ function love.load( )
     backgrounds[v]=love.graphics.newImage("backgrounds/"..v..".gif")
   	end
 
-  	for _,v in pairs(backgrounds) do
+  	for _,v in pairs(backgrounds) do --[[Scale every image with nearest neighbor interpolation]]
     v:setFilter("nearest","nearest")
   	end
 
@@ -31,20 +31,22 @@ function love.load( )
 	clickables[v]=love.graphics.newImage("clickables/"..v..".gif")
 	end
 
-	for _,v in pairs(clickables) do
+	for _,v in pairs(clickables) do --[[Scale every image with nearest neighbor interpolation]]
 	v:setFilter("nearest","nearest")
 	end
 
-  	ani_names = {"propeller1", "propeller2", "propeller3", "propeller4", 
-  	"mouth1", "mouth2", "mouth3", "mouth4", "clouds1", "clouds2", "clouds3",
-  	"clouds4"}
+  	ani_names = {"propeller", "mouth", "clouds"}
+  	ani_frames = {4,4,4} --[[Number of frames in each corresponding animation]]
+  	ani_width = {57,24,48}  --[[Width of each frame in each corresponding animation]]
+  	ani_height = {15,28,145}  --[[Height of each frame in each corresponding animation]]
 	animations = {}
+	quad = love.graphics.newQuad(0, 0, 2, 2, 2, 2 )
 
 	for _,v in ipairs(ani_names) do
-    animations[v]=love.graphics.newImage("animations/"..v..".gif")
+    animations[v]=love.graphics.newImage("animations/"..v..".png")
   	end
 
-  	for _,v in pairs(animations) do
+	for _,v in pairs(animations) do    --[[Scale every image with nearest neighbor interpolation]]
     v:setFilter("nearest","nearest")
   	end
 
@@ -86,8 +88,10 @@ function love.draw( )
 	end
 
 	if animation then
-		local x = animation[3]..aniFrame
-		love.graphics.draw(animations[x], animation[1]*scale, animation[2]*scale, 0, scale, scale)end
+		local name = animation[3] --[[Name of the animation]]
+		local x, y, w, h, sw, sh = quad:getViewport()
+		quad:setViewport((aniFrame-1)*ani_frames[animation[4]], 0, ani_width[animation[4]], ani_height[animation[4]], ani_width[animation[4]]*ani_frames[animation[4]], ani_height[animation[4]])
+		love.graphics.drawq(animations[name], quad, animation[1]*scale, animation[2]*scale, 0, scale, scale)end
 
 	if current == "firstRoom" then firstRoom.draw()
 	elseif current == "closedSafe" then closedSafe.draw()
@@ -125,7 +129,7 @@ function love.update(dt)
 
 		aniFrame = aniFrame + 1
 		aniTimer = 0
-		if aniFrame == 5 then aniFrame = 1 end
+		if aniFrame == 5 then aniFrame = 1 end --[[ funciona enquanto as animações tiverem so 4 frames. Fazer no futuro]]
 
 	end
 

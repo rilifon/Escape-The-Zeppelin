@@ -12,7 +12,7 @@ function splash.load( )
 
   	}
 
-  	animation = {47, 66, "propeller"}
+  	animation = {47, 66, "propeller",1} --[[Fourth number is the index on the animations table of this animation]]
 
   	wind = love.audio.newSource( "resources/Strong_wind.ogg" , "stream" )
   	wind:setLooping(true)

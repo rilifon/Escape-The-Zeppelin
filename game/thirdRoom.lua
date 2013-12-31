@@ -6,7 +6,7 @@ function thirdRoom.load()
 
 	Text = "I seem to be on the zeppelin's deck"
 
-	animation = {146, -5, "clouds"}
+	animation = {146, -5, "clouds",3}
 
 	eventos = {
 
