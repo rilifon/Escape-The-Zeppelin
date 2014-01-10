@@ -1,0 +1,20 @@
+{
+	"build_systems":
+	[
+		{
+			"cmd":
+			[
+				"love",
+				"game"
+			],
+			"name": "LOVE2D",
+			"working_dir": "${project_path}"
+		}
+	],
+	"folders":
+	[
+		{
+			"path": "game"
+		}
+	]
+}

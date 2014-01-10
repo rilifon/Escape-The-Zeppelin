@@ -13,6 +13,7 @@ function splash.load( )
   	}
 
   	animation = {47, 66, "propeller",1} --[[Fourth number is the index on the animations table of this animation]]
+    animations.propeller:start()
 
   	wind = love.audio.newSource( "resources/Strong_wind.ogg" , "stream" )
   	wind:setLooping(true)
@@ -23,7 +24,7 @@ end
 function splash.update(dt)
 	
 	if evento == "zeppelin" then
-
+    animations.propeller:pause()
 		love.audio.stop(wind)
 		firstRoom.load( )
 	end

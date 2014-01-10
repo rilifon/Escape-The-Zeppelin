@@ -1,4 +1,6 @@
 require "math"
+require "base.timer"
+require "base.sprite"
 require "splash"
 require "firstRoom"
 require "closedSafe"
@@ -14,57 +16,50 @@ function love.load( )
 	backgrounds = {}
 
 	for _,v in ipairs(back_names) do
-    backgrounds[v]=love.graphics.newImage("backgrounds/"..v..".gif")
-  	end
+		backgrounds[v]=love.graphics.newImage("backgrounds/"..v..".gif")
+	end
 
-  	for _,v in pairs(backgrounds) do --[[Scale every image with nearest neighbor interpolation]]
-    v:setFilter("nearest","nearest")
-  	end
+	for _,v in pairs(backgrounds) do --[[Scale every image with nearest neighbor interpolation]]
+		v:setFilter("nearest","nearest")
+	end
 
 
-  	click_names = {"key", "hammer", "b0", "b1", "b2", "b3",
-  	 "b4", "b5", "b6", "b7", "b8", "b9", "hatch", "panel", 
-  	 "hammerIcon", "keyIcon", "window", "fencepost"}
+	click_names = {"key", "hammer", "b0", "b1", "b2", "b3",
+	 "b4", "b5", "b6", "b7", "b8", "b9", "hatch", "panel", 
+	 "hammerIcon", "keyIcon", "window", "fencepost"}
 	clickables = {}
 
 	for _,v in ipairs(click_names) do
-	clickables[v]=love.graphics.newImage("clickables/"..v..".gif")
+		clickables[v]=love.graphics.newImage("clickables/"..v..".gif")
 	end
 
 	for _,v in pairs(clickables) do --[[Scale every image with nearest neighbor interpolation]]
-	v:setFilter("nearest","nearest")
+		v:setFilter("nearest","nearest")
 	end
 
-  	ani_names = {"propeller", "mouth", "clouds"}
-  	ani_frames = {4,4,4} --[[Number of frames in each corresponding animation]]
-  	ani_width = {57,24,48}  --[[Width of each frame in each corresponding animation]]
-  	ani_height = {15,28,145}  --[[Height of each frame in each corresponding animation]]
+	ani_names = {"propeller", "mouth", "clouds"}
+	ani_frames = {4,4,4} --[[Number of frames in each corresponding animation]]
+	ani_width = {57,24,48}  --[[Width of each frame in each corresponding animation]]
+	ani_height = {15,28,145}  --[[Height of each frame in each corresponding animation]]
 	animations = {}
-	quad = love.graphics.newQuad(0, 0, 2, 2, 2, 2 )
 
-	for _,v in ipairs(ani_names) do
-    animations[v]=love.graphics.newImage("animations/"..v..".png")
-  	end
+	for i,v in ipairs(ani_names) do
+		animations[v] = base.Sprite(love.graphics.newImage("animations/"..v..".png"), .25, ani_width[i], ani_frames[i])
+		animations[v].image:setFilter("nearest","nearest")
+	end
 
-	for _,v in pairs(animations) do    --[[Scale every image with nearest neighbor interpolation]]
-    v:setFilter("nearest","nearest")
-  	end
+	font = love.graphics.newFont("resources/PressStart2P.ttf",5*scale)
+	love.graphics.setFont(font)
 
+	splash.load()
 
-  	font = love.graphics.newFont("resources/PressStart2P.ttf",5*scale)
-  	love.graphics.setFont(font)
+	evento = "zero"
+	coords = false
 
-  	splash.load()
+	mouseX, mouseY = 0, 0
 
-  	evento = "zero"
-  	coords = false
-
-  	mouseX, mouseY = 0, 0
-  	aniTimer = 0
-  	aniFrame = 1
-
-  	itemCount = 0
-  	itemIndex = 0
+	itemCount = 0
+	itemIndex = 0
 
 
 end
@@ -89,9 +84,8 @@ function love.draw( )
 
 	if animation then
 		local name = animation[3] --[[Name of the animation]]
-		local x, y, w, h, sw, sh = quad:getViewport()
-		quad:setViewport((aniFrame-1)*ani_frames[animation[4]], 0, ani_width[animation[4]], ani_height[animation[4]], ani_width[animation[4]]*ani_frames[animation[4]], ani_height[animation[4]])
-		love.graphics.drawq(animations[name], quad, animation[1]*scale, animation[2]*scale, 0, scale, scale)end
+		animations[name]:draw(animation[1]*scale, animation[2]*scale)
+	end
 
 	if current == "firstRoom" then firstRoom.draw()
 	elseif current == "closedSafe" then closedSafe.draw()
@@ -107,7 +101,7 @@ end
 
 function love.update(dt)
 
-
+	base.Timer.updateTimers(dt)
 	if toLoad == "firstRoom" then 
 		firstRoom.load()
 		debugagem = true
@@ -122,16 +116,6 @@ function love.update(dt)
 	end
 
 	toLoad = "none"
-
-	aniTimer = aniTimer + dt
-
-	if aniTimer >= .25 then
-
-		aniFrame = aniFrame + 1
-		aniTimer = 0
-		if aniFrame == 5 then aniFrame = 1 end --[[ funciona enquanto as animações tiverem so 4 frames. Fazer no futuro]]
-
-	end
 
 	if current == "splash" then splash.update(dt)
 	elseif current == "firstRoom" then firstRoom.update(dt)

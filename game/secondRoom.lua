@@ -15,9 +15,9 @@ function secondRoom.load( )
 
 	}
 
-	animation = nil
+	animation = {89, 64, "mouth",2}
+	animations.mouth.currentFrame = 0
 
-	k = 1
 
 	hy = 66
 
@@ -28,8 +28,8 @@ function secondRoom.update(dt)
 	if timer then 
 		timer = timer + dt
 		if timer >= 2.5 then
-			animation = nil
-			k = 4
+			animations.mouth:pause()
+			animations.mouth.currentFrame = 0
 			if not hammer then getHammer = true end
 			hy = hy + math.floor((timer-2.5)*10)
 			if hy >= 96 then hy = 96 end
@@ -48,9 +48,8 @@ function secondRoom.update(dt)
  		end
 
  	elseif evento == "stoneface" then
- 		animation = {89, 64, "mouth",2}
+ 		animations.mouth:start()
  		timer = 0
- 		aniFrame = 1
  		love.mouse.setVisible(false)
  		Text = "\"Strike the base of\neighteen's one!\""
 
@@ -67,8 +66,6 @@ function secondRoom.update(dt)
 end
 
 function secondRoom.draw( ... )
-
-	if not animation then love.graphics.draw(animations["mouth"..k], 89*scale, 64*scale, 0, scale, scale) end
 
 	if getHammer then love.graphics.draw(clickables["hammer"], 97*scale, hy*scale, 0, scale, scale) end
 

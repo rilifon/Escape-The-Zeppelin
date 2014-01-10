@@ -7,6 +7,7 @@ function thirdRoom.load()
 	Text = "I seem to be on the zeppelin's deck"
 
 	animation = {146, -5, "clouds",3}
+	animations.clouds:start()
 
 	eventos = {
 
@@ -28,6 +29,7 @@ function thirdRoom.update(dt)
 
 	elseif evento == "buraco" then 
 
+		animations.clouds:pause()
 		toLoad = "firstRoom"
 		love.audio.stop(wind)
 
