@@ -2,12 +2,12 @@ thirdRoom = {}
 
 function thirdRoom.load()
 
-	current = "thirdRoom"
+	currentScene = thirdRoom
 
 	Text = "I seem to be on the zeppelin's deck"
 
-	animation = {146, -5, "clouds",3}
-	animations.clouds:start()
+	animations.clouds:restart()
+	animations.clouds.position:set(146, -5)
 
 	eventos = {
 
@@ -30,7 +30,7 @@ function thirdRoom.update(dt)
 	elseif evento == "buraco" then 
 
 		animations.clouds:pause()
-		toLoad = "firstRoom"
+		toLoad = firstRoom
 		love.audio.stop(wind)
 
 	elseif evento == "porta" then
@@ -44,6 +44,7 @@ end
 
 function thirdRoom.draw( )
 
+	animations.clouds:draw()
 	love.graphics.draw(clickables["fencepost"], 65*scale, 106*scale, 0, scale, scale)
 
 end

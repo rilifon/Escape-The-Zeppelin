@@ -2,7 +2,7 @@ closedSafe = {}
 
 function closedSafe.load( )
 
-	current = "closedSafe"
+	currentScene = closedSafe
 
 	Text = "Time to hack this safe"
 
@@ -57,12 +57,12 @@ function closedSafe.update(dt)
 	elseif evento == "lever" then
 
 		if guess == 2308 then 
-			toLoad = "openSafe"
+			toLoad = openSafe
 
 		else Text = "It won't budge!" end
 
 	elseif evento == "bordaEsquerda" or evento == "bordaDireita"then
-		toLoad = "firstRoom"
+		toLoad = firstRoom
 
 	end
 

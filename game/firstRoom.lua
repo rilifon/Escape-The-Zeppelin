@@ -2,7 +2,7 @@ firstRoom = {}
 
 function firstRoom.load( )
 
-	current = "firstRoom"
+	currentScene = firstRoom
 
 	Text = "I seem to be in a weird storage room"
 
@@ -45,14 +45,14 @@ function firstRoom.update(dt)
 
  	elseif evento == "interruptor" then
  		if window == true then Text = "No use turning off the lights\nwith that hole to the open sky"
- 		else toLoad = "darkfirstRoom" end	
+ 		else toLoad = darkfirstRoom end	
 
  	elseif evento == "cofre" then
- 		if not key then toLoad = "closedSafe"
+ 		if not key then toLoad = closedSafe
  		else Text = "I already got THE KEY" end
 
  	elseif evento == "escotilha" then
- 		toLoad = "secondRoom"
+ 		toLoad = secondRoom
 
  	elseif evento == "porta" then
  		if active == "key" then 
@@ -68,9 +68,8 @@ function firstRoom.update(dt)
  		else Text = "A painting of a windblown tree\nnext to some rocks" end
 
  	elseif evento == "window" then
- 		toLoad = "thirdRoom"
-
-
+ 		toLoad = thirdRoom
+ 		
  	end
 
 end

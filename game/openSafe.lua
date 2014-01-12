@@ -2,7 +2,7 @@ openSafe = {}
 
 function openSafe.load( )
 
-	current = "openSafe"
+	currentScene = openSafe
 
 	Text = "da-da-da-da-dum-dah-dah-daaah"
 
@@ -36,7 +36,7 @@ function openSafe.update(dt)
 		Text = "I got THE KEY"
 
 	elseif evento == "bordaEsquerda" or evento == "bordaDireita"then
-		toLoad = "firstRoom"
+		toLoad = firstRoom
 
 	end
 

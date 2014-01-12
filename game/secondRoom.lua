@@ -4,7 +4,7 @@ secondRoom = {}
 
 function secondRoom.load( )
 
-	current = "secondRoom"
+	currentScene = secondRoom
 
 	Text = "Curioser and curioser"
 
@@ -15,9 +15,8 @@ function secondRoom.load( )
 
 	}
 
-	animation = {89, 64, "mouth",2}
-	animations.mouth.currentFrame = 0
-
+	animations.mouth:setFrame(0)
+	animations.mouth.position:set(89, 64)
 
 	hy = 66
 
@@ -29,7 +28,6 @@ function secondRoom.update(dt)
 		timer = timer + dt
 		if timer >= 2.5 then
 			animations.mouth:pause()
-			animations.mouth.currentFrame = 0
 			if not hammer then getHammer = true end
 			hy = hy + math.floor((timer-2.5)*10)
 			if hy >= 96 then hy = 96 end
@@ -43,8 +41,8 @@ function secondRoom.update(dt)
  	
  	if evento == "pole" then
  		
- 		if debugagem == true then toLoad = "firstRoom"
- 		elseif debugagem == false then toLoad = "darkfirstRoom"
+ 		if debugagem == true then toLoad = firstRoom
+ 		elseif debugagem == false then toLoad = darkfirstRoom
  		end
 
  	elseif evento == "stoneface" then
@@ -65,8 +63,9 @@ function secondRoom.update(dt)
 
 end
 
-function secondRoom.draw( ... )
+function secondRoom.draw()
 
+	animations.mouth:draw()
 	if getHammer then love.graphics.draw(clickables["hammer"], 97*scale, hy*scale, 0, scale, scale) end
 
 end

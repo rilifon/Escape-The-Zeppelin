@@ -2,31 +2,35 @@ splash = {}
 
 function splash.load( )
 
-	current = "splash"
+	currentScene = splash
 
-  	Text = "ESCAPE THE ZEPPELIN \nDemo da edicao estendida e pixelada!"
+	Text = "ESCAPE THE ZEPPELIN \nDemo da edicao estendida e pixelada!"
 
-  	eventos = {
+	eventos = {
 
-  	{52, 57, 80, 34, "zeppelin"}
+	{52, 57, 80, 34, "zeppelin"}
 
-  	}
+	}
 
-  	animation = {47, 66, "propeller",1} --[[Fourth number is the index on the animations table of this animation]]
-    animations.propeller:restart()
+	animations.propeller.position:set(47, 66)
+	animations.propeller:restart()
 
-  	wind = love.audio.newSource( "resources/Strong_wind.ogg" , "stream" )
-  	wind:setLooping(true)
-  	love.audio.play(wind)
+	wind = love.audio.newSource( "resources/Strong_wind.ogg" , "stream" )
+	wind:setLooping(true)
+	love.audio.play(wind)
 
 end
 
 function splash.update(dt)
 	
 	if evento == "zeppelin" then
-    animations.propeller:pause()
+		animations.propeller:pause()
 		love.audio.stop(wind)
-		firstRoom.load( )
+		firstRoom.load()
 	end
 
+end
+
+function splash.draw()
+	animations.propeller:draw()
 end

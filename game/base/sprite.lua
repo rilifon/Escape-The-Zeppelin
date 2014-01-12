@@ -2,6 +2,7 @@ module("base", package.seeall)
 
 require "base.object"
 require "base.timer"
+require "base.vector"
 
 -- Sprites display spritesheets. Using timers. Real smart stuff.
 
@@ -14,12 +15,15 @@ Sprite = base.Object:newSubClass {
 	-- Width of each frame
 	frameWidth = nil,
 	-- Total number of frames
-	frameN = nil
+	frameN = nil,
+	-- position where the sprite will be drawn (defaults to (0,0))
+	position = nil
 }
 
 function Sprite:__init()
 	self.currentFrame = 0
 	self.frameHeight = self.frameHeight or self.image:getHeight()
+	self.position = self.position or Vector{0, 0}
 	
 	self.quad = love.graphics.newQuad(0, 0, 
 		self.frameWidth, self.frameHeight, self.image:getWidth(), self.frameHeight)
@@ -32,6 +36,11 @@ end
 
 function Sprite:nextFrame()
 	self.currentFrame = (self.currentFrame + 1) % self.frameN
+	self.quad:setViewport(self.currentFrame * self.frameWidth, 0, self.frameWidth, self.frameHeight)
+end
+
+function Sprite:setFrame( i )
+	self.currentFrame = i
 	self.quad:setViewport(self.currentFrame * self.frameWidth, 0, self.frameWidth, self.frameHeight)
 end
 
@@ -52,6 +61,6 @@ function Sprite:__tostring()
 	return 'some sprite ('.. (self.currentFrame + 1) ..'/'.. self.frameN .. ')'
 end
 
-function Sprite:draw(x, y)
-	love.graphics.drawq(self.image, self.quad, x, y, 0, scale, scale)
+function Sprite:draw()
+	love.graphics.drawq(self.image, self.quad, self.position.x * scale, self.position.y * scale, 0, scale, scale)
 end

@@ -2,7 +2,7 @@ darkfirstRoom = {}
 
 function darkfirstRoom.load( )
 
-	current = "darkfirstRoom"
+	currentScene = darkfirstRoom
 
 	Text = "Creppy"
 
@@ -38,7 +38,7 @@ function darkfirstRoom.update(dt)
  		Text = "It's too dark"
 
  	elseif evento == "interruptor" then
- 		toLoad = "firstRoom"
+ 		toLoad = firstRoom
 
  	elseif evento == "fechadura" then
  		if active == "key" then 
@@ -48,7 +48,7 @@ function darkfirstRoom.update(dt)
  		end
 
  	elseif evento == "escotilha" then
- 		toLoad = "secondRoom"
+ 		toLoad = secondRoom
 
  	elseif evento == "porta" then
  		Text = "There is a beam of sunlight coming\nfrom the keyhole"
