@@ -20,11 +20,8 @@ require "base.object"
 -- A: Call Entities.register(your_entity).
 
 -- Class declaration.
-Entity = base.object.newClass {
-	-- Is a class declaration (just syntatic sugar)
-	__isdecl = true,
-	-- Type ID obviously
-	__typeid = nil
+Entity = base.Object:newSubClass {
+
 }
 
 -- Entity constructor.
@@ -33,7 +30,7 @@ function Entity:__init()
 	-- meaning that a pure Entity instance is not
 	-- to be created.
 	-- Therefore...
-	self.__typeid = "What the fuck are you trying to do?!"
+	error("You shouldn't be doing this.\n", 2)
 end
 
 -- Override this with much gusto.
@@ -64,24 +61,24 @@ local entities = {}
 Entities = {}
 
 -- Registers Entity.
-function Entities.register(e)
+function Entities.register( e )
 	entities[e] = true
 end
 
 -- Removes Entity.
-function Entities.remove(e)
+function Entities.remove( e )
 	entities[e] = nil
 end
 
 -- Clears all Entities.
-function Entities.clear(e)
-	for k,_ in pairs(entities) do
+function Entities.clear()
+	for k in pairs(entities) do
 		entities[k] = nil
 	end
 end
 
 -- Checks whether the collection contains the given Entity.
-function Entities.contains(e)
+function Entities.contains( e )
 	return entities[e]
 end
 
@@ -93,8 +90,8 @@ function Entities.onRender()
 end
 
 -- Updates all Entities in the collection.
-function Entities.onUpdate(dt)
-	for k,_ in pairs(entities) do
+function Entities.onUpdate( dt )
+	for k in pairs(entities) do
 		k:update(dt)
 	end
 end

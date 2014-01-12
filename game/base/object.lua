@@ -1,4 +1,4 @@
-module("base.object", package.seeall)
+module("base", package.seeall)
 
 -- Utility functions for a pseudo OOP structure in Lua
 
@@ -49,55 +49,39 @@ module("base.object", package.seeall)
 -- [3] Prince, The - N. Machiavelli | They say adding quotes 
 -- from people who are smarter than you makes you sound more intelligent.
 
--- Retrieves the given class' super class.
-local function super(class)
-	return getmetatable(class)
+Object = {}
+
+
+local function clone( obj )
+	if type(obj) ~= 'table' then return obj end
+	local copy = {}
+
+	for k, v in pairs(instance) do
+		copy[k] = clone(v)
+	end
+
+	return setmetatable(copy, getmetatable(obj))
 end
 
--- Creates a class inheriting others optionally.
-function newClass(...)
-	local class, bases = {}, {...}
+-- Creates a class. (Please don't call this from objects, or shit WILL go down)
+function Object:newSubClass( data )
+	local class = data or {}
 
-	for _, b in ipairs(bases) do
-		if not b.__isdecl then
-			for k, v in pairs(b) do
-				class[k] = v
-			end
-		end
-	end
+	class.__index = class
+	class.__super, class.clone = getmetatable, clone
 
-	class.__index, class.instanceof = class, {[class] = true}
+	setmetatable(class, { __call = function(_class, data)
+		local instance = setmetatable(data or {}, _class)
+		local init = _class.__init
 
-	for _, b in ipairs(bases) do
-		if not b.__isdecl then
-			for deps in pairs(b.instanceof) do
-				class.instanceof[deps] = true
-			end
-			class.instanceof[b] = true
-		end
-	end
-
-	setmetatable(class, {__call = function(_class, ...)
-		local instance = setmetatable({}, _class)
-		local init = instance.__init
-
-		if init then init(instance, ...) end
+		if init then init(instance) end
 
 		return instance
-	end})
-
-	class.__super, class.__typeid = super, "undefined"
+	end, __index = self --[[can access stuff from superclasses]] })
 
 	return class
 end
 
--- Clones an already existing class instance.
-function clone(instance)
-	local copy = {}
-
-	for k, v in pairs(instance) do
-		copy[k] = v
-	end
-
-	return setmetatable(copy, instance:super())
-end
+setmetatable(Object, {__newindex = function()
+		error("You (probably) shouldn't be doing this. Change this code if you should...\n", 2)
+	end})

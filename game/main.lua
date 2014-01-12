@@ -43,12 +43,18 @@ function love.load( )
 	ani_height = {15,28,145}  --[[Height of each frame in each corresponding animation]]
 	animations = {}
 
-	for i,v in ipairs(ani_names) do
-		animations[v] = base.Sprite(love.graphics.newImage("animations/"..v..".png"), .25, ani_width[i], ani_frames[i])
+	for i, v in ipairs(ani_names) do
+		animations[v] = base.Sprite {
+			image = love.graphics.newImage("animations/" .. v .. ".png"), 
+			timePerFrame = .25, 
+			frameWidth = ani_width[i],
+			frameHeight = ani_height[i], -- not necessary, but doesn't hurt.
+			frameN = ani_frames[i]
+		}
 		animations[v].image:setFilter("nearest","nearest")
 	end
 
-	font = love.graphics.newFont("resources/PressStart2P.ttf",5*scale)
+	font = love.graphics.newFont("resources/PressStart2P.ttf", 5 * scale)
 	love.graphics.setFont(font)
 
 	splash.load()

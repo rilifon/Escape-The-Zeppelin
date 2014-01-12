@@ -48,7 +48,7 @@ function secondRoom.update(dt)
  		end
 
  	elseif evento == "stoneface" then
- 		animations.mouth:start()
+ 		animations.mouth:unpause()
  		timer = 0
  		love.mouse.setVisible(false)
  		Text = "\"Strike the base of\neighteen's one!\""
